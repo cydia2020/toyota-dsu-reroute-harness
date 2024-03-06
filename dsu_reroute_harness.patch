@@ -1,0 +1,74 @@
+diff --git a/selfdrive/car/toyota/carstate.py b/selfdrive/car/toyota/carstate.py
+index e4ea0d30f..e9284f983 100644
+--- a/selfdrive/car/toyota/carstate.py
++++ b/selfdrive/car/toyota/carstate.py
+@@ -128,9 +128,11 @@ class CarState(CarStateBase):
+       conversion_factor = CV.KPH_TO_MS if is_metric else CV.MPH_TO_MS
+       ret.cruiseState.speedCluster = cluster_set_speed * conversion_factor
+ 
+-    cp_acc = cp_cam if self.CP.carFingerprint in (TSS2_CAR - RADAR_ACC_CAR) else cp
++    cp_acc = cp_cam if (self.CP.carFingerprint in (TSS2_CAR - RADAR_ACC_CAR) or \
++             bool(self.CP.flags & ToyotaFlags.DSU_BYPASS.value)) else cp
+ 
+-    if self.CP.carFingerprint in TSS2_CAR and not self.CP.flags & ToyotaFlags.DISABLE_RADAR.value:
++    if (self.CP.flags & ToyotaFlags.DSU_BYPASS.value) or (self.CP.carFingerprint in TSS2_CAR \
++       and not self.CP.flags & ToyotaFlags.DISABLE_RADAR.value):
+       if not (self.CP.flags & ToyotaFlags.SMART_DSU.value):
+         self.acc_type = cp_acc.vl["ACC_CONTROL"]["ACC_TYPE"]
+       ret.stockFcw = bool(cp_acc.vl["PCS_HUD"]["FCW"])
+@@ -208,7 +210,8 @@ class CarState(CarStateBase):
+         ("PCS_HUD", 1),
+       ]
+ 
+-    if CP.carFingerprint not in (TSS2_CAR - RADAR_ACC_CAR) and not CP.enableDsu and not CP.flags & ToyotaFlags.DISABLE_RADAR.value:
++    if CP.carFingerprint not in (TSS2_CAR - RADAR_ACC_CAR) and not CP.enableDsu and \
++       not (CP.flags & ToyotaFlags.DISABLE_RADAR.value or CP.flags & ToyotaFlags.DSU_BYPASS.value):
+       messages += [
+         ("PRE_COLLISION", 33),
+       ]
+@@ -224,7 +227,7 @@ class CarState(CarStateBase):
+         ("LKAS_HUD", 1),
+       ]
+ 
+-    if CP.carFingerprint in (TSS2_CAR - RADAR_ACC_CAR):
++    if CP.flags & ToyotaFlags.DSU_BYPASS.value or CP.carFingerprint in (TSS2_CAR - RADAR_ACC_CAR):
+       messages += [
+         ("PRE_COLLISION", 33),
+         ("ACC_CONTROL", 33),
+diff --git a/selfdrive/car/toyota/interface.py b/selfdrive/car/toyota/interface.py
+index 7fd5c9435..55532719f 100644
+--- a/selfdrive/car/toyota/interface.py
++++ b/selfdrive/car/toyota/interface.py
+@@ -116,6 +116,10 @@ class CarInterface(CarInterfaceBase):
+     if 0x2FF in fingerprint[0] or (0x2AA in fingerprint[0] and candidate in NO_DSU_CAR):
+       ret.flags |= ToyotaFlags.SMART_DSU.value
+ 
++    # 0x343 should not be present on bus 2 on cars other than TSS2_CAR unless we are re-routing DSU
++    if 0x343 in fingerprint[2] and candidate not in TSS2_CAR:
++      ret.flags |= ToyotaFlags.DSU_BYPASS.value
++
+     # No radar dbc for cars without DSU which are not TSS 2.0
+     # TODO: make an adas dbc file for dsu-less models
+     ret.radarUnavailable = DBC[candidate]['radar'] is None or candidate in (NO_DSU_CAR - TSS2_CAR)
+@@ -146,7 +150,8 @@ class CarInterface(CarInterfaceBase):
+     #  - TSS2 radar ACC cars w/ smartDSU installed
+     #  - TSS2 radar ACC cars w/o smartDSU installed (disables radar)
+     #  - TSS-P DSU-less cars w/ CAN filter installed (no radar parser yet)
+-    ret.openpilotLongitudinalControl = use_sdsu or ret.enableDsu or candidate in (TSS2_CAR - RADAR_ACC_CAR) or bool(ret.flags & ToyotaFlags.DISABLE_RADAR.value)
++    ret.openpilotLongitudinalControl = use_sdsu or ret.enableDsu or candidate in (TSS2_CAR - RADAR_ACC_CAR) or \
++                                       bool(ret.flags & ToyotaFlags.DISABLE_RADAR.value) or bool(ret.flags & ToyotaFlags.DSU_BYPASS.value)
+     ret.autoResumeSng = ret.openpilotLongitudinalControl and candidate in NO_STOP_TIMER_CAR
+     ret.enableGasInterceptor = 0x201 in fingerprint[0] and ret.openpilotLongitudinalControl
+ 
+diff --git a/selfdrive/car/toyota/values.py b/selfdrive/car/toyota/values.py
+index 9989b9225..de0a40ed1 100644
+--- a/selfdrive/car/toyota/values.py
++++ b/selfdrive/car/toyota/values.py
+@@ -46,6 +46,7 @@ class ToyotaFlags(IntFlag):
+   HYBRID = 1
+   SMART_DSU = 2
+   DISABLE_RADAR = 4
++  DSU_BYPASS = 512
+ 
+   # Static flags
+   TSS2 = 8
