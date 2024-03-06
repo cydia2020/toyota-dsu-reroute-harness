@@ -1,6 +1,8 @@
 # What Is This
 
-This is the basic design and idea of an alternative to comma.ai's "car harness" for TSS-P Toyotas with a Driving Support ECU (DSU), this harness replaces the functionality of the SmartDSU, and allows the DSU to be "re-routed" to the camera part of the existing car harness, which is CAN2 on the panda. It allows the filtration of CAN ID `0x343` on TSS-P Toyotas without the need for additional logical hardware, and reducing the potential point of failure.
+This is the basic design and idea of an alternative to comma.ai's "car harness" for TSS-P Toyotas with a Driving Support ECU (DSU), this harness replaces the functionality of the SmartDSU, and allows the DSU to be "re-routed" to the camera part of the existing car harness, which is CAN2 on the panda. It allows the harness box to switch the DSU's output, enabling the filtration of CAN ID `0x343` on TSS-P Toyotas without the need for additional logical hardware, thus reducing the potential point of failure.
+
+This will essentially act as an SmartDSU when implemented correctly (minus all the software issues). It will allow openpilot Longitudinal Control when your comma device is connected to the vehicle, whilst allowing the stock system to function normally when the comma device isn't being used.
 
 # Schematic
 
