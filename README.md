@@ -14,14 +14,34 @@ As it is nearly impossible to find a male DSU connector, it is suggested that yo
 
 - Looking at the back (wire-side) of the DSU connector, counting from 1 from the right-top-most-PIN, you should sever the cable on PIN 10 and PIN 11;
 - Tape the vehicle side of the severed wire to prevent a short circuit;
-- Using a pair of 24-gauge speaker (or realistically, whatever you can find in the e-waste box) wire, extend the wire coming out of PIN 10 and PIN 11 from the DSU side of the harness up to the camera;
-- Cut wire 5 and 11 on the camera side of the existing car harness;
+- Using around 2 to 3 meters of twisted pair wires with 120Ω impedance (or realistically, whatever you can find in the e-waste box), extend the wire coming out of PIN 10 and PIN 11 from the DSU side (the side of the OEM harness bundle with the female DSU connector) of the harness up to the camera;
+- Cut wire 5 and 11 on the camera side of the existing comma car harness;
 - Connect PIN 10 of the DSU to PIN 5 of the camera harness, and PIN 11 to PIN 11 of the camera harness;
-- Re-join the original camera harness back together;
-- Zip tie, heat shrink, and insulate everything, and you should be done.
+- Re-join the original comma car harness back together;
+- Zip tie, heat shrink, and insulate everything, modify openpilot according to the patch file (or use my fork) and you should be done.
 
 ![Schematic of The DSU Re-Route Harness](schematic.jpeg?raw=true "Schematic")
 
-# openpilot Software Change
+# FAQ
 
-A patch file is included in this repository for your reference.
+Here is a list of some questions that you may have regarding this harness. Feel free to reach out to me on Discord (cydia2020) should you have any other concerns about this project.
+
+## Are You Planning To Sell It?
+No, I do not have the time to fulfil orders, and I do not have access to the DSU's male connector. As a result, it is impossible for me to sell this harness. Consider making it yourself; it's really simple and it will be a great learning opportunity if you are just getting started with car mods and/or openpilot. Furthermore, if you have done the work correctly, any changes that you've made to the vehicle will be fully reversible when you decide to sell the car or stop using openpilot.
+
+## What's The Difference Between This and a SmartDSU?
+This is a lot cheaper (a few dollars for the cables compared to a few hundred for a panda), and it doesn't have any logic circuitry in it. Essentially, it replaces the SmartDSU with your comma device's built-in panda.
+
+## If openpilot Is Not Enabled, or if The Comma Device Is Not Plugged-In, Would Stock ACC Still Function?
+Yes.
+
+## Is The Long CAN Bus Extension A Concern?
+Maybe. Usually, CAN Bus cables shouldn't be extended this long without a termination resistor built-in to the furthest node. However, CAN Bus is very robust, and I haven't personally seen any issues with this setup.
+
+## I am Getting "CAN Error: Check Connections" After Installing This Harness
+First, check all connections.
+
+openpilot needs some modification in order for this harness to work, as openpilot is expecting a few signals from bus0 of the panda, and now those signals have been moved to bus2. Openpilot will think that the CAN Bus has a fault. An openpilot patch file has been included in this repository for your reference.
+
+## Are panda Code Modifications Required? Will This Get My Device Banned?
+At this stage, panda code modifications are not required as panda filters `0x343` by default on all Toyota vehicles, and your device is unlikely to get banned.
