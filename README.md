@@ -41,7 +41,10 @@ Maybe. Usually, CAN Bus cables shouldn't be extended this long without a termina
 ## I am Getting "CAN Error: Check Connections" After Installing This Harness
 First, check all connections.
 
-openpilot needs some modification in order for this harness to work, as openpilot is expecting a few signals from bus0 of the panda, and now those signals have been moved to bus2. Openpilot will think that the CAN Bus has a fault. An openpilot patch file has been included in this repository for your reference.
+openpilot needs some modification in order for this harness to work, as openpilot is expecting a few signals from bus0 of the panda, and now those signals have been moved to bus2. openpilot will think that the CAN Bus has a fault. An openpilot patch file that resolves this issue has been included in this repository for your reference.
 
 ## Are panda Code Modifications Required? Will This Get My Device Banned?
 At this stage, panda code modifications are not required as panda filters `0x343` by default on all Toyota vehicles, and your device is unlikely to get banned.
+
+## What Fork Supports This?
+At this stage, only my fork supports it. However, support for this harness is extremely easy to implement and can be done within seconds. Send this repository to your fork's maintainer(s), and they will know what to do!
