@@ -10,7 +10,9 @@ A simple schematic of the harness has been attached for your convenience. I apol
 
 ## Schematic and Wiring Explained
 
-As it is nearly impossible to find a male DSU connector, it is suggested that you cut the wire on the vehicle's harness.
+~~As it is nearly impossible to find a male DSU connector, it is suggested that you cut the wire on the vehicle's harness.~~
+
+Plug and receptacle part number: DJ7324-0.7-11/21 (available on Taobao and eBay)
 
 - Looking at the back (wire-side) of the DSU connector, counting from 1 from the right-top-most-PIN, you should sever the cable on PIN 10 and PIN 11;
 - Tape the vehicle side of the severed wire to prevent a short circuit;
@@ -21,6 +23,17 @@ As it is nearly impossible to find a male DSU connector, it is suggested that yo
 - Zip tie, heat shrink, and insulate everything, modify openpilot according to the patch file (or use my fork) and you should be done.
 
 ![Schematic of The DSU Re-Route Harness](schematic.jpeg?raw=true "Schematic")
+
+# Parts Needed (Plug-n-Play Option)
+
+You will need the following connectors if you are making this as a PnP solution:
+- DSU Plug and Receptacle: DJ7324-0.7-11/21
+- comma.ai Toyota A Harness, which contains
+ - Camera Plug (Female Camera Connector): 1318774-1
+ - Camera Plug Female PIN Receptacles: 1123343-1 (*10)
+ - Camera Receptacle (Male Camera Connector): 1565894-1
+ - Camera Receptacle Male PIN Tabs: 1376109-1 (*10)
+
 
 # FAQ
 
