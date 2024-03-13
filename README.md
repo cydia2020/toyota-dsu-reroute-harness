@@ -28,11 +28,11 @@ Plug and receptacle part number: DJ7324-0.7-11/21 (available on Taobao and eBay)
 
 You will need the following connectors if you are making this as a PnP solution:
 - DSU Plug and Receptacle: DJ7324-0.7-11/21
-- comma.ai Toyota A Harness, which contains
- - Camera Plug (Female Camera Connector): 1318774-1
- - Camera Plug Female PIN Receptacles: 1123343-1 (*10)
- - Camera Receptacle (Male Camera Connector): 1565894-1
- - Camera Receptacle Male PIN Tabs: 1376109-1 (*10)
+- comma.ai Toyota A Harness, or, you can make your own harness by purchasing:
+  - Camera Plug (Female Camera Connector): 1318774-1
+  - Camera Plug Female PIN Receptacles: 1123343-1 (*10)
+  - Camera Receptacle (Male Camera Connector): 1565894-1
+  - Camera Receptacle Male PIN Tabs: 1376109-1 (*10)
 
 
 # FAQ
