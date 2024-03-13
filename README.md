@@ -10,10 +10,6 @@ A simple schematic of the harness has been attached for your convenience. I apol
 
 ## Schematic and Wiring Explained
 
-~~As it is nearly impossible to find a male DSU connector, it is suggested that you cut the wire on the vehicle's harness.~~
-
-Plug and receptacle part number: DJ7324-0.7-11/21 (available on Taobao and eBay)
-
 - Looking at the back (wire-side) of the DSU connector, counting from 1 from the right-top-most-PIN, you should sever the cable on PIN 10 and PIN 11;
 - Tape the vehicle side of the severed wire to prevent a short circuit;
 - Using around 2 to 3 meters of twisted pair wires with 120Ω impedance (or realistically, whatever you can find in the e-waste box), extend the wire coming out of PIN 10 and PIN 11 from the DSU side (the side of the OEM harness bundle with the female DSU connector) of the harness up to the camera;
@@ -22,7 +18,7 @@ Plug and receptacle part number: DJ7324-0.7-11/21 (available on Taobao and eBay)
 - Re-join the original comma car harness back together;
 - Zip tie, heat shrink, and insulate everything, modify openpilot according to the patch file (or use my fork) and you should be done.
 
-![Schematic of The DSU Re-Route Harness](schematic.jpeg?raw=true "Schematic")
+![Schematic of The DSU Re-Route Harness](/docs/schematic.jpeg?raw=true "Schematic")
 
 # Parts Needed (Plug-n-Play Option)
 
@@ -33,6 +29,11 @@ You will need the following connectors if you are making this as a PnP solution:
   - Camera Plug Female PIN Receptacles: 1123343-1 (*10)
   - Camera Receptacle (Male Camera Connector): 1565894-1
   - Camera Receptacle Male PIN Tabs: 1376109-1 (*10)
+
+| | |
+|:-------------------------:|:-------------------------:|
+|<img width="1604" alt="DSU Side of the Harness" src="/docs/dsu_male_female.jpg">  DSU Side of the Harness |  <img width="1604" alt="DSU Female Side PIN Assignment" src="/docs/dsu_female_pinout.jpg"> DSU Side Female PIN Assignment|
+|<img width="1604" alt="DSU Male PIN To Be Cut" src="/docs/dsu_male_pinout.jpg">  DSU Male Side PIN To Be Cut|  <img width="1604" alt="Camera Female Side PIN Assignment" src="/docs/camera_pinout.jpg"> Camera Female Side PIN Assignment|
 
 
 # FAQ
